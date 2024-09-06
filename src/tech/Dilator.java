@@ -1,5 +1,5 @@
 package tech;
-public class Dilation {
+public class Dilator {
     // Esta clase es la encargada de dilatar la imagen
     
 }
