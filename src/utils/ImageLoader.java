@@ -10,7 +10,7 @@ public class ImageLoader {
 
     Image imageLoaded = null;
 
-    ImageLoader(String path){
+    public ImageLoader(String path){
         try {
             image = ImageIO.read(new File(path));
         } catch (IOException e) {

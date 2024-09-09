@@ -10,7 +10,6 @@ public class Image {
         this.ancho = ancho;
         this.path = path;
     }
-
     public int getAlto() {
         return alto;
     }
