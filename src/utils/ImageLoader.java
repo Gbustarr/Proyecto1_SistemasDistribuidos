@@ -17,7 +17,7 @@ public class ImageLoader {
             throw new RuntimeException(e);
         }
 
-        this.imageLoaded = new Image(image.getWidth(), image.getHeight(), path);
+        this.imageLoaded = new Image(image.getWidth(), image.getHeight(), path,image);
     }
 
     public Image getImage() {

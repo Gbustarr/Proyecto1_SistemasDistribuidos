@@ -30,7 +30,7 @@ public class GestionImagenes {
                     gray = color.getGreen();
                 if(tipo == 'B') //Azul
                     gray = color.getBlue();
-                if(tipo == 'Z') //Azul
+                if(tipo == 'Z') //Gray
                     gray = (color.getRed()+color.getBlue()+color.getGreen())/3;
                 values[y][x] = gray;
             }
@@ -40,6 +40,7 @@ public class GestionImagenes {
     public void guardar(char tipo){
         double canal[][] = getValues(tipo);
         BufferedImage imagen = new BufferedImage(canal.length,canal[0].length,1);
+
         for (int i = 0; i < canal.length; i++) {
             for (int j = 0; j < canal[0].length; j++) {
                 int rgb = (int)canal[i][j]<<16 | (int)canal[i][j] << 8 | (int)canal[i][j];
