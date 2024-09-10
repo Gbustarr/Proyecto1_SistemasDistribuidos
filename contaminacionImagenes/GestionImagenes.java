@@ -12,6 +12,7 @@ public class GestionImagenes {
         this.path = path;
         try {
             image = ImageIO.read(new File(path));
+            System.out.println(image);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

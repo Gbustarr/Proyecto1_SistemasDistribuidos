@@ -76,18 +76,15 @@ public class Image {
         String outPath;
 
         if(OS == 0){
-            outPath = System.getProperty("user.dir") + "\\mg\\saved_images\\";
+            outPath = System.getProperty("user.dir") + "\\img\\saved_images\\";
 
         }else{
             outPath = System.getProperty("user.dir") + "/img/saved_images/";
         }
 
-        
         if (!new File(outPath).exists()) {
             new File(outPath).mkdirs();
         }
-
-
 
         // Guardando canal rojo
         BufferedImage redImagen = new BufferedImage(redChannel.length,redChannel[0].length,1);

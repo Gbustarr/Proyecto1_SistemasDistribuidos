@@ -1,7 +1,10 @@
 public class Main {
     public static void main(String[] args) {
-        GestionImagenes g = new GestionImagenes("img/img_1.png");
-        //g.salPimienta(100f);
+
+        String imagePath = "contaminacionImagenes\\img\\img_1.png"; // Windows
+
+        GestionImagenes g = new GestionImagenes(imagePath);
+        g.salPimienta(40f);
 
         g.guardar('R');
         g.guardar('G');

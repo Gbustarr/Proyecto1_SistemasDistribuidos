@@ -18,7 +18,17 @@ public class Run {
             try {
                 System.out.println("Image file exists: " + imageFile.getAbsolutePath());
                 imgLoader = new ImageLoader(imagePath);
+
                 System.out.println(imgLoader.getImage().getAncho());
+
+                    img = imgLoader.getImage();
+
+                    img.setOS(0);
+
+                    img.setRGBChannels();
+
+                    img.saveRGBtoImages();
+
             } catch (Exception e) {
                 // TODO: handle exception
             }
