@@ -32,13 +32,13 @@ public class Dilator {
     }
 
     // Método de dilatación secuencial usando la matriz expandida
-    public double[][] dilatacionSecuencial() {
+    public double[][] dilatacionSecuencial(int startRow, int endRow) {
         // Expandir la matriz original
         double[][] matrizExpandida = expandMatrix(matrizOriginal);
         
         switch (figura) {
             case 1: // Figura 1: max[(x,y), (x-1,y), (x+1,y), (x,y-1), (x,y+1)]
-                for (int i = 1; i <= alto; i++) {
+                for (int i = startRow; i <= endRow; i++)  {
                     for (int j = 1; j <= ancho; j++) {
                         matrizDilatada[i - 1][j - 1] = Math.max(
                             matrizExpandida[i][j],
@@ -55,7 +55,7 @@ public class Dilator {
                 break;
 
             case 2: // Figura 2: max[(x,y), (x-1,y), (x,y-1)]
-                for (int i = 1; i <= alto; i++) {
+                for (int i = startRow; i <= endRow; i++)  {
                     for (int j = 1; j <= ancho; j++) {
                         matrizDilatada[i - 1][j - 1] = Math.max(
                             matrizExpandida[i][j],
@@ -66,7 +66,7 @@ public class Dilator {
                 break;
 
             case 3: // Figura 3: max[(x,y), (x-1,y), (x,y+1)]
-                for (int i = 1; i <= alto; i++) {
+                for (int i = startRow; i <= endRow; i++)  {
                     for (int j = 1; j <= ancho; j++) {
                         matrizDilatada[i - 1][j - 1] = Math.max(
                             matrizExpandida[i][j],
@@ -76,7 +76,7 @@ public class Dilator {
                 }
                 break;
             case 4: // Figura 4: max[(x,y), (x-1,y), (x+1,y)]
-                for (int i = 1; i <= alto; i++) {
+                for (int i = startRow; i <= endRow; i++)  {
                     for (int j = 1; j <= ancho; j++) {
                         matrizDilatada[i - 1][j - 1] = Math.max(
                             matrizExpandida[i][j],
@@ -86,7 +86,7 @@ public class Dilator {
                 }
                 break;    
             case 5: // Figura 5: max[(x,y), (x,y-1)]
-            for (int i = 1; i <= alto; i++) {
+            for (int i = startRow; i <= endRow; i++)  {
                 for (int j = 1; j <= ancho; j++) {
                     matrizDilatada[i - 1][j - 1] = Math.max(
                         matrizExpandida[i][j],matrizExpandida[i][j-1]);
@@ -94,7 +94,7 @@ public class Dilator {
                 }
                 break;
             case 6: // Figura 1: max[(x,y), (x-1,y), (x+1,y), (x,y-1), (x,y+1)]
-                for (int i = 1; i <= alto; i++) {
+                for (int i = startRow; i <= endRow; i++)  {
                     for (int j = 1; j <= ancho; j++) {
                         matrizDilatada[i - 1][j - 1] = Math.max(
                             matrizExpandida[i][j],
