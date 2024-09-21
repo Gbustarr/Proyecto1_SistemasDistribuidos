@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) {
 
-        String imagePath = "contaminacionImagenes\\img\\img_1.png"; // Windows
+        String imagePath = "contaminacionImagenes\\img\\prueba.png"; // Windows
 
         GestionImagenes g = new GestionImagenes(imagePath);
         g.salPimienta(40f);
