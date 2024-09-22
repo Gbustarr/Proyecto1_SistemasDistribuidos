@@ -12,6 +12,8 @@ public class WindowMenu extends JFrame {
     
     private JLabel imageLabel;
     private JLabel imageNameLabel;
+    private JLabel imageWidthLabel;
+    private JLabel imageHeightLabel;
     private BufferedImage image;
     
     public WindowMenu() {
@@ -20,15 +22,26 @@ public class WindowMenu extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-
         // Crear un panel para la imagen
         imageLabel = new JLabel("Carga una imagen", JLabel.CENTER);
         imageLabel.setPreferredSize(new Dimension(600, 400));
         add(imageLabel, BorderLayout.CENTER);
 
+        // Crear un panel para las etiquetas de información de la imagen
+        JPanel infoPanel = new JPanel(new GridLayout(3, 1));
+        
         // Crear una etiqueta para mostrar el nombre de la imagen cargada
         imageNameLabel = new JLabel("", JLabel.CENTER);
-        add(imageNameLabel, BorderLayout.NORTH);
+        infoPanel.add(imageNameLabel);
+
+        // Crear etiquetas para mostrar la anchura y altura de la imagen cargada
+        imageWidthLabel = new JLabel("", JLabel.CENTER);
+        infoPanel.add(imageWidthLabel);
+        
+        imageHeightLabel = new JLabel("", JLabel.CENTER);
+        infoPanel.add(imageHeightLabel);
+
+        add(infoPanel, BorderLayout.NORTH);
 
         // Crear botones
         JButton loadButton = new JButton("Cargar Imagen");
@@ -57,7 +70,9 @@ public class WindowMenu extends JFrame {
                         ImageIcon icon = new ImageIcon(getScaledImage(image, 600, 400));
                         imageLabel.setIcon(icon);
                         imageLabel.setText(null);
-                        imageNameLabel.setText("Imagen: " + file.getName()+"\nWidth: " + image.getWidth()+"\nHeight: " + image.getHeight());
+                        imageNameLabel.setText("Imagen: " + file.getName());
+                        imageWidthLabel.setText("Ancho: " + image.getWidth()+"px");
+                        imageHeightLabel.setText("Altura: " + image.getHeight()+"px");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         JOptionPane.showMessageDialog(null, "Error al cargar la imagen");
