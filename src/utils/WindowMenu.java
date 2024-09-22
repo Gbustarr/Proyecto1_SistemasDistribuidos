@@ -60,6 +60,10 @@ public class WindowMenu extends JFrame {
         JButton erodeButton = new JButton("Erosionar");
         JButton dilateButton = new JButton("Dilatar");
 
+        // Checkbox para activar el modo paralelo
+        JCheckBox paralelOptionBox = new JCheckBox("Modo paralelo");
+        paralelOptionBox.setSelected(true);
+        
         // Panel para botones
         JPanel buttonPanel = new JPanel();
 
@@ -67,6 +71,7 @@ public class WindowMenu extends JFrame {
         buttonPanel.add(contaminarImagen);
         buttonPanel.add(erodeButton);
         buttonPanel.add(dilateButton);
+        buttonPanel.add(paralelOptionBox);
         add(buttonPanel, BorderLayout.SOUTH);
 
         // Crear un panel para el título y las figuras
