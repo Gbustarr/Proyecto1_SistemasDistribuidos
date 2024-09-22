@@ -64,7 +64,7 @@ public class GestionImagenes {
         blue = clamp(blue, 0, 255);
         return (red << 16) | (green << 8) | blue;
     }
-    public void salPimienta(float porcentaje){
+    public BufferedImage salPimienta(float porcentaje){
         BufferedImage imagen = new BufferedImage(alto,ancho,1);
         int pixeles = (int)((alto*ancho)*(porcentaje/100));
         int imagens[][] = new int[alto][ancho];
@@ -81,7 +81,7 @@ public class GestionImagenes {
             int valorEntero = (int) (Math.floor(Math.random()*(1-0+1)+0));  // Valor entre M y N, ambos incluidos.
             int yy = (int) (Math.floor(Math.random()*alto));
             int xx = (int) (Math.floor(Math.random()*ancho));
-            Color color = new Color(image.getRGB(yy,xx));
+            //Color color = new Color(image.getRGB(yy,xx));
             //if(imagens[yy][xx]!= -1 && imagens[yy][xx] != rgbToInt(0, 0, 0) && imagens[yy][xx] != rgbToInt(255, 255, 255)){
             if(imagens[yy][xx] == -1 ){
                 switch (valorEntero){
@@ -109,7 +109,8 @@ public class GestionImagenes {
             }
         }
         try {
-            ImageIO.write(imagen,"png", new File("img/tipo_Ruido_"+porcentaje+".png"));
+            ImageIO.write(imagen,"png", new File("src/contaminacionImagenes/img/tipo_Ruido_"+porcentaje+".png"));
+            return imagen;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

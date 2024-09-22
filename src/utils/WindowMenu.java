@@ -1,7 +1,8 @@
 package utils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
+
+import contaminacionImagenes.GestionImagenes;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,8 +11,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-import contaminacionImagenes.GestionImagenes;
+//import contaminacionImagenes.GestionImagenes;
 
 public class WindowMenu extends JFrame {
 
@@ -73,15 +76,26 @@ public class WindowMenu extends JFrame {
         // Checkbox para activar el modo paralelo
         JCheckBox paralelOptionBox = new JCheckBox("Modo paralelo");
         paralelOptionBox.setSelected(true);
-        
+
+        //input para el porcentaje de contaminación
+        JLabel contaminationLabel = new JLabel("%", JLabel.RIGHT);
+        JTextField contaminationInput = new JTextField(String.valueOf(contaminationPercentage));
+
         // Panel para botones
         JPanel buttonPanel = new JPanel();
 
+        // Añadir un espacio entre los botones
+        
+
         buttonPanel.add(loadButton);
         buttonPanel.add(contaminarImagen);
+        buttonPanel.add(contaminationInput);
+        buttonPanel.add(contaminationLabel);
+        buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(erodeButton);
         buttonPanel.add(dilateButton);
         buttonPanel.add(paralelOptionBox);
+        
         add(buttonPanel, BorderLayout.SOUTH);
 
         // Crear un panel para el título y las figuras
@@ -217,11 +231,27 @@ public class WindowMenu extends JFrame {
 
         // LISTENERS
 
+        // Listener para contaminationInput
+        contaminationInput.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                try {
+                    contaminationPercentage = Float.parseFloat(contaminationInput.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido.");
+                }
+            }
+        });
+
         contaminarImagen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestionImagenes gestionImagenes = new GestionImagenes(imagePath);
+                GestionImagenes GI = new GestionImagenes(imagePath);
+                BufferedImage imagenContaminada = GI.salPimienta(contaminationPercentage);
 
+                ImageIcon iconContaminada = new ImageIcon(getScaledImage(imagenContaminada, 600, 400));
+                imageLabel.setIcon(iconContaminada);
+                imageLabel.setText(null);
+        
             }
         });
 
