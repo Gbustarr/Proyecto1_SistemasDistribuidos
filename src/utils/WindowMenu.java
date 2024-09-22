@@ -81,7 +81,7 @@ public class WindowMenu extends JFrame {
             }
         });
 
-        // Acciones para los botones "Erosionar" y "Dilatar" (no implementadas aún)
+        // Acciones para los botones "Erosionar" y "Dilatar" 
         erodeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
