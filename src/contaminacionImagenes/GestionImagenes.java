@@ -9,17 +9,13 @@ public class GestionImagenes {
     int alto, ancho;
     String path;
     BufferedImage image = null;
-    public GestionImagenes(String path){
-        this.path = path;
-        try {
-            image = ImageIO.read(new File(path));
-            System.out.println(image);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public GestionImagenes(BufferedImage image) {
+
+        this.image = image;
         alto = image.getWidth();
         ancho = image.getHeight();
     }
+    
     public double[][] getValues(char tipo) {
         double[][] values = new double[alto][ancho];
         for(int y = 0; y < alto; y++) {

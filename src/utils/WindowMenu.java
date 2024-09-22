@@ -245,10 +245,10 @@ public class WindowMenu extends JFrame {
         contaminarImagen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestionImagenes GI = new GestionImagenes(imagePath);
-                BufferedImage imagenContaminada = GI.salPimienta(contaminationPercentage);
+                GestionImagenes GI = new GestionImagenes(image);
+                image = GI.salPimienta(contaminationPercentage);
 
-                ImageIcon iconContaminada = new ImageIcon(getScaledImage(imagenContaminada, 600, 400));
+                ImageIcon iconContaminada = new ImageIcon(getScaledImage(image, 600, 400));
                 imageLabel.setIcon(iconContaminada);
                 imageLabel.setText(null);
         
