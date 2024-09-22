@@ -1,3 +1,4 @@
+package contaminacionImagenes;
 import javax.imageio.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,7 +9,7 @@ public class GestionImagenes {
     int alto, ancho;
     String path;
     BufferedImage image = null;
-    GestionImagenes(String path){
+    public GestionImagenes(String path){
         this.path = path;
         try {
             image = ImageIO.read(new File(path));

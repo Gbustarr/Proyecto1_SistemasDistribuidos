@@ -11,6 +11,8 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.Image;
 
+import contaminacionImagenes.GestionImagenes;
+
 public class WindowMenu extends JFrame {
 
     private JLabel imageLabel;
@@ -25,6 +27,9 @@ public class WindowMenu extends JFrame {
     private JButton figure4;
     private JButton figure5;
     private JButton figure6;
+
+    public String imagePath = "";
+    public float contaminationPercentage = 10f;
 
     public WindowMenu() {
         // Configurar la ventana
@@ -59,6 +64,11 @@ public class WindowMenu extends JFrame {
         JButton contaminarImagen = new JButton("Contaminar Imagen");
         JButton erodeButton = new JButton("Erosionar");
         JButton dilateButton = new JButton("Dilatar");
+
+        // Deshabilitar botones al inicio de la ejecución del programa
+        contaminarImagen.setEnabled(false);
+        erodeButton.setEnabled(false);
+        dilateButton.setEnabled(false);
 
         // Checkbox para activar el modo paralelo
         JCheckBox paralelOptionBox = new JCheckBox("Modo paralelo");
@@ -189,11 +199,29 @@ public class WindowMenu extends JFrame {
                         imageNameLabel.setText("Imagen: " + file.getName());
                         imageWidthLabel.setText("Ancho: " + image.getWidth() + "px");
                         imageHeightLabel.setText("Altura: " + image.getHeight() + "px");
+
+                        // Habilitar botones
+                        contaminarImagen.setEnabled(true);
+                        erodeButton.setEnabled(true);
+                        dilateButton.setEnabled(true);
+
+                        // Guardar la ruta de la imagen
+                        imagePath = file.getAbsolutePath();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         JOptionPane.showMessageDialog(null, "Error al cargar la imagen");
                     }
                 }
+            }
+        });
+
+        // LISTENERS
+
+        contaminarImagen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GestionImagenes gestionImagenes = new GestionImagenes(imagePath);
+
             }
         });
 
