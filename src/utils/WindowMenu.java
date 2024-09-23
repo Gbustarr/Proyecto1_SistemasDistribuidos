@@ -294,7 +294,20 @@ public class WindowMenu extends JFrame {
         dilateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Dilatar aún no implementado.");
+                // Actualizando ultima imagen cargada
+                processor.setImg(image);
+                try {
+                    if (paralelOptionBox.isSelected()) {
+                        image = processor.processDilatorP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
+                        updateImage(image);
+                    } else {
+                        processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al erosionar la imagen");
+                }
+
             }
         });
     }
