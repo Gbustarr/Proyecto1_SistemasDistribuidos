@@ -3,6 +3,7 @@ package utils;
 import javax.swing.*;
 
 import contaminacionImagenes.GestionImagenes;
+import tech.ImageProcessor;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,6 +34,9 @@ public class WindowMenu extends JFrame {
 
     public String imagePath = "";
     public float contaminationPercentage = 10f;
+
+    ImageProcessor processor = new ImageProcessor();
+
 
     public WindowMenu() {
         // Configurar la ventana
@@ -197,6 +201,8 @@ public class WindowMenu extends JFrame {
             });
         }
 
+        
+
         // Acción para cargar imagen
         loadButton.addActionListener(new ActionListener() {
             @Override
@@ -207,9 +213,7 @@ public class WindowMenu extends JFrame {
                     File file = fileChooser.getSelectedFile();
                     try {
                         image = ImageIO.read(file);
-                        ImageIcon icon = new ImageIcon(getScaledImage(image, 600, 400));
-                        imageLabel.setIcon(icon);
-                        imageLabel.setText(null);
+                        updateImage(image);
                         imageNameLabel.setText("Imagen: " + file.getName());
                         imageWidthLabel.setText("Ancho: " + image.getWidth() + "px");
                         imageHeightLabel.setText("Altura: " + image.getHeight() + "px");
@@ -248,9 +252,7 @@ public class WindowMenu extends JFrame {
                 GestionImagenes GI = new GestionImagenes(image);
                 image = GI.salPimienta(contaminationPercentage);
 
-                ImageIcon iconContaminada = new ImageIcon(getScaledImage(image, 600, 400));
-                imageLabel.setIcon(iconContaminada);
-                imageLabel.setText(null);
+                updateImage(image);
         
             }
         });
@@ -259,7 +261,20 @@ public class WindowMenu extends JFrame {
         erodeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Erosionar aún no implementado.");
+                // Actualizando ultima imagen cargada
+                processor.setImg(image);
+                try {
+                    if (paralelOptionBox.isSelected()) {
+                        image = processor.processEroderP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                        updateImage(image);
+                    } else {
+                        processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error al erosionar la imagen");
+                }
+
             }
         });
 
@@ -271,6 +286,12 @@ public class WindowMenu extends JFrame {
         });
     }
 
+    public void updateImage(BufferedImage img) {
+        ImageIcon icon = new ImageIcon(getScaledImage(img, 600, 400));
+        imageLabel.setIcon(icon);
+        imageLabel.setText(null);
+    }
+
     // Método para configurar los botones
     private void configureButton(JButton button) {
         button.setBackground(Color.GRAY);
@@ -280,7 +301,6 @@ public class WindowMenu extends JFrame {
         button.setContentAreaFilled(false);
         button.setOpaque(false);
         button.setBackground(new Color(0, 0, 0, 128));
-
     }
 
     // Método para escalar la imagen manteniendo las proporciones

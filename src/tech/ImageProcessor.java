@@ -9,8 +9,10 @@ public class ImageProcessor {
     
     private Image img;
 
-    public ImageProcessor(Image img) {
-        this.img = img;
+
+
+    public void setImg(BufferedImage img) {
+        this.img = new Image(img.getHeight(), img.getWidth(), "", img);
     }
 
     public void processDilatorS(String outputPath , Integer figura) throws Exception {
@@ -88,7 +90,7 @@ public class ImageProcessor {
     }
     
     // Proceso de erosión paralelo
-    public void processEroderP(String outputPath, Integer figura) throws Exception {
+    public BufferedImage processEroderP(String outputPath, Integer figura) throws Exception {
         // Crear arrays para almacenar los resultados de cada canal
         final double[][][] results = new double[3][][];
     
@@ -128,7 +130,7 @@ public class ImageProcessor {
         blueThread.join();
     
         // Combinar los resultados y guardar la imagen resultante
-        saveImage(outputPath, results[0], results[1], results[2]);
+        return saveImage(outputPath, results[0], results[1], results[2]);
     }
 
      // Método para procesar un canal de color en paralelo utilizando Dilator
@@ -195,7 +197,7 @@ public class ImageProcessor {
         }
     }
 
-    private void saveImage(String outputPath, double[][] redChannel, double[][] greenChannel, double[][] blueChannel) throws Exception {
+    private BufferedImage saveImage(String outputPath, double[][] redChannel, double[][] greenChannel, double[][] blueChannel) throws Exception {
         int width = img.getAncho();
         int height = img.getAlto();
         BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -209,12 +211,14 @@ public class ImageProcessor {
 
                 // Combinar los valores de los tres canales en un solo color
                 int rgb = (red << 16) | (green << 8) | blue;
-                imagen.setRGB(j, i, rgb);
+                imagen.setRGB(i, j, rgb);
             }
         }
 
         // Guardar la imagen procesada
         ImageIO.write(imagen, "png", new File(outputPath));
+        
         System.out.println("Imagen guardada en: " + outputPath);
+        return imagen;
     }
 }
