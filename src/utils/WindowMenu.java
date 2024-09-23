@@ -91,8 +91,8 @@ public class WindowMenu extends JFrame {
         JLabel threadLabel = new JLabel("N° Threads: ", JLabel.RIGHT);
         JTextField threadsInput = new JTextField(String.valueOf(numThreads));
 
-        threadLabel.setVisible(false);
-        threadsInput.setVisible(false);
+        /* threadLabel.setVisible(false);
+        threadsInput.setVisible(false); */
         
 
         // Panel para botones
@@ -278,7 +278,7 @@ public class WindowMenu extends JFrame {
                 processor.setImg(image);
                 try {
                     if (paralelOptionBox.isSelected()) {
-                        image = processor.processEroderP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                        image = processor.processEroderP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
                         updateImage(image);
                     } else {
                         processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));

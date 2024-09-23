@@ -90,14 +90,14 @@ public class ImageProcessor {
     }
     
     // Proceso de erosión paralelo
-    public BufferedImage processEroderP(String outputPath, Integer figura) throws Exception {
+    public BufferedImage processEroderP(String outputPath, Integer figura, Integer numThreads) throws Exception {
         // Crear arrays para almacenar los resultados de cada canal
         final double[][][] results = new double[3][][];
     
         // Crear hilos para procesar cada canal en paralelo
         Thread redThread = new Thread(() -> {
             try {
-                results[0] = parallelChannelEroder(img.getChannel('R'), figura);
+                results[0] = parallelChannelEroder(img.getChannel('R'), figura, numThreads);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -105,7 +105,7 @@ public class ImageProcessor {
     
         Thread greenThread = new Thread(() -> {
             try {
-                results[1] = parallelChannelEroder(img.getChannel('G'), figura);
+                results[1] = parallelChannelEroder(img.getChannel('G'), figura, numThreads);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -113,7 +113,7 @@ public class ImageProcessor {
     
         Thread blueThread = new Thread(() -> {
             try {
-                results[2] = parallelChannelEroder(img.getChannel('B'), figura);
+                results[2] = parallelChannelEroder(img.getChannel('B'), figura,numThreads);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -154,22 +154,27 @@ public class ImageProcessor {
     }
 
     // Método para procesar un canal de color en paralelo utilizando Eroder
-    private double[][] parallelChannelEroder(double[][] channel, Integer figura) throws InterruptedException {
-        int mid = channel.length / 2;
+    private double[][] parallelChannelEroder(double[][] channel, Integer figura, Integer numThreads) throws InterruptedException {
+        int rowsPerThread = channel.length / numThreads;
         double[][] result = new double[channel.length][channel[0].length];
-    
-        // Crear dos hilos para procesar la mitad de cada canal
-        Thread thread1 = new Thread(() -> processPartEroder(channel, result, 1, mid, figura));
-        Thread thread2 = new Thread(() -> processPartEroder(channel, result, mid, channel.length, figura));
-    
+        Thread[] threads = new Thread[numThreads];
+
+        for (int i = 0; i < numThreads; i++) {
+            int startRow = (i * rowsPerThread != 0) ? i * rowsPerThread : 1 ; // Para que inicie en la fila 1
+            int endRow = (i == numThreads - 1) ? channel.length : startRow + rowsPerThread;
+            threads[i] = new Thread(() -> processPartEroder(channel, result, startRow, endRow, figura));
+        }
+
         // Iniciar los hilos
-        thread1.start();
-        thread2.start();
-    
+        for (Thread thread : threads) {
+            thread.start();
+        }
+
         // Esperar que los hilos terminen
-        thread1.join();
-        thread2.join();
-    
+        for (Thread thread : threads) {
+            thread.join();
+        }
+
         return result;
     }
 
