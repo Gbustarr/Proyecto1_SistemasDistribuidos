@@ -9,10 +9,10 @@ public class ImageProcessor {
     
     private Image img;
 
-
-
     public void setImg(BufferedImage img) {
         this.img = new Image(img.getHeight(), img.getWidth(), "", img);
+        this.img.setRGBChannels();
+        System.out.println("Image loaded: "+ this.img.getAlto()+"x"+ this.img.getAncho());
     }
 
     public void processDilatorS(String outputPath , Integer figura) throws Exception {
@@ -200,7 +200,7 @@ public class ImageProcessor {
     private BufferedImage saveImage(String outputPath, double[][] redChannel, double[][] greenChannel, double[][] blueChannel) throws Exception {
         int width = img.getAncho();
         int height = img.getAlto();
-        BufferedImage imagen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage imagen = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB); // Cambiados a proposito
 
         // Combinar los canales en la imagen final
         for (int i = 0; i < height; i++) {

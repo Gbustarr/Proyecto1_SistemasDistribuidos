@@ -18,8 +18,8 @@ public class Image {
     double[][] redChannel, greenChannel, blueChannel;
 
     public Image(int alto,int ancho,String path,BufferedImage img){
-        this.alto = alto;
-        this.ancho = ancho;
+        this.alto = ancho; //Cambiado a proposito
+        this.ancho = alto; //Cambiado a proposito
         this.path = path;
         this.img = img;
     }

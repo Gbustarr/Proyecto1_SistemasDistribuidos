@@ -1,4 +1,4 @@
-import utils.*;
+import utils.WindowMenu;
 
 public class Run {
     public static void main(String[] args) {
