@@ -35,6 +35,8 @@ public class WindowMenu extends JFrame {
     public String imagePath = "";
     public float contaminationPercentage = 10f;
 
+    private int numThreads = 3;
+
     ImageProcessor processor = new ImageProcessor();
 
 
@@ -85,6 +87,14 @@ public class WindowMenu extends JFrame {
         JLabel contaminationLabel = new JLabel("%", JLabel.RIGHT);
         JTextField contaminationInput = new JTextField(String.valueOf(contaminationPercentage));
 
+        // Input de numero de threads
+        JLabel threadLabel = new JLabel("N° Threads: ", JLabel.RIGHT);
+        JTextField threadsInput = new JTextField(String.valueOf(numThreads));
+
+        threadLabel.setVisible(false);
+        threadsInput.setVisible(false);
+        
+
         // Panel para botones
         JPanel buttonPanel = new JPanel();
 
@@ -99,6 +109,9 @@ public class WindowMenu extends JFrame {
         buttonPanel.add(erodeButton);
         buttonPanel.add(dilateButton);
         buttonPanel.add(paralelOptionBox);
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(threadLabel);
+        buttonPanel.add(threadsInput);
         
         add(buttonPanel, BorderLayout.SOUTH);
 
@@ -207,29 +220,29 @@ public class WindowMenu extends JFrame {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int result = fileChooser.showOpenDialog(null);
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File file = fileChooser.getSelectedFile();
-                    try {
-                        image = ImageIO.read(file);
-                        updateImage(image);
-                        imageNameLabel.setText("Imagen: " + file.getName());
-                        imageWidthLabel.setText("Ancho: " + image.getWidth() + "px");
-                        imageHeightLabel.setText("Altura: " + image.getHeight() + "px");
+            JFileChooser fileChooser = new JFileChooser(new File(System.getProperty("user.dir")));
+            int result = fileChooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                image = ImageIO.read(file);
+                updateImage(image);
+                imageNameLabel.setText("Imagen: " + file.getName());
+                imageWidthLabel.setText("Ancho: " + image.getWidth() + "px");
+                imageHeightLabel.setText("Altura: " + image.getHeight() + "px");
 
-                        // Habilitar botones
-                        contaminarImagen.setEnabled(true);
-                        erodeButton.setEnabled(true);
-                        dilateButton.setEnabled(true);
+                // Habilitar botones
+                contaminarImagen.setEnabled(true);
+                erodeButton.setEnabled(true);
+                dilateButton.setEnabled(true);
 
-                        // Guardar la ruta de la imagen
-                        imagePath = file.getAbsolutePath();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Error al cargar la imagen");
-                    }
+                // Guardar la ruta de la imagen
+                imagePath = file.getAbsolutePath();
+                } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al cargar la imagen");
                 }
+            }
             }
         });
 
