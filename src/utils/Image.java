@@ -38,11 +38,11 @@ public class Image {
 
     public void setRGBChannels(){
         this.redChannel = getChannel('R');
-        System.out.println("Red channel setted");
+        //System.out.println("Red channel setted");
         this.greenChannel = getChannel('G');
-        System.out.println("Green channel setted");
+        //System.out.println("Green channel setted");
         this.blueChannel = getChannel('B');
-        System.out.println("Blue channel setted");
+        //System.out.println("Blue channel setted");
     }
 
     public void setOS(int OS) {

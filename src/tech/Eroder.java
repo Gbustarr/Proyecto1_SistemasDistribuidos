@@ -6,6 +6,7 @@ public class Eroder {
     private int alto, ancho;
     private int figura;
 
+
     public Eroder(double[][] matrizOriginal, int figura) {
         this.matrizOriginal = matrizOriginal;
         this.alto = matrizOriginal.length;

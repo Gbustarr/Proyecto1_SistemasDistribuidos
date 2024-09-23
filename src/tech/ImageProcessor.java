@@ -12,7 +12,7 @@ public class ImageProcessor {
     public void setImg(BufferedImage img) {
         this.img = new Image(img.getHeight(), img.getWidth(), "", img);
         this.img.setRGBChannels();
-        System.out.println("Image loaded: "+ this.img.getAlto()+"x"+ this.img.getAncho());
+        //System.out.println("Image loaded: "+ this.img.getAlto()+"x"+ this.img.getAncho());
     }
 
     public void processDilatorS(String outputPath , Integer figura) throws Exception {
@@ -74,6 +74,7 @@ public class ImageProcessor {
                 e.printStackTrace();
             }
         });
+        long start = System.currentTimeMillis();
     
         // Iniciar los hilos
         redThread.start();
@@ -84,6 +85,8 @@ public class ImageProcessor {
         redThread.join();
         greenThread.join();
         blueThread.join();
+        long end = System.currentTimeMillis();
+        System.out.println("[Dilator] Tiempo de ejecución: " + (end - start) + "ms");
     
         // Combinar los resultados y guardar la imagen resultante
         return saveImage(outputPath, results[0], results[1], results[2]);
@@ -118,7 +121,7 @@ public class ImageProcessor {
                 e.printStackTrace();
             }
         });
-    
+        long start = System.currentTimeMillis();
         // Iniciar los hilos
         redThread.start();
         greenThread.start();
@@ -128,6 +131,8 @@ public class ImageProcessor {
         redThread.join();
         greenThread.join();
         blueThread.join();
+        long end = System.currentTimeMillis();
+        System.out.println("[Eroder] Tiempo de ejecución: " + (end - start) + "ms");
     
         // Combinar los resultados y guardar la imagen resultante
         return saveImage(outputPath, results[0], results[1], results[2]);
@@ -146,6 +151,8 @@ public class ImageProcessor {
             threads[i] = new Thread(() -> processPartDilator(channel, result, startRow, endRow, figura));
         }
 
+        
+
         // Iniciar los hilos
         for (Thread thread : threads) {
             thread.start();
@@ -155,6 +162,9 @@ public class ImageProcessor {
         for (Thread thread : threads) {
             thread.join();
         }
+
+
+
         return result;
 
     }
