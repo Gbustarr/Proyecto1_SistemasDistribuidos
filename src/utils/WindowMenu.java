@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
@@ -32,6 +34,9 @@ public class WindowMenu extends JFrame {
     private JButton figure4;
     private JButton figure5;
     private JButton figure6;
+
+    private JTextArea logArea;
+    private String logHistory = "";
 
     public String imagePath = "";
     public float contaminationPercentage = 10f;
@@ -165,8 +170,12 @@ public class WindowMenu extends JFrame {
             System.out.println(ex);
         }
 
+        // Panel derecho
+
+        JPanel rightPanel = new JPanel(new GridLayout(2,1));
+
         // Panel para figuras con gaps mínimos
-        JPanel figurePanel = new JPanel(new GridLayout(6, 2, 1, 1));
+        JPanel figurePanel = new JPanel(new GridLayout(4, 2, 1, 1));
 
         // Agregar figuras y nombres al panel
         JButton[] figures = { figure1, figure2, figure3, figure4, figure5, figure6 };
@@ -187,7 +196,21 @@ public class WindowMenu extends JFrame {
 
         // Agregar panel de figuras al contenedor
         figureContainerPanel.add(figurePanel, BorderLayout.CENTER);
-        add(figureContainerPanel, BorderLayout.EAST);
+        //add(figureContainerPanel, BorderLayout.EAST);
+
+        // Crea un textarea para hacer seguimiento de los tiempos de ejecución de cada algoritmo
+        JLabel logAreaLabel = new JLabel("Logs:", JLabel.CENTER);
+        logArea = new JTextArea("");
+        logArea.setEditable(false);
+
+        // Panel para hacer seguimiento de los tiempos de ejecución de los algoritmos
+        JPanel logPanel = new JPanel(new BorderLayout());
+        logPanel.add(logAreaLabel, BorderLayout.NORTH);
+        logPanel.add(new JScrollPane(logArea), BorderLayout.CENTER);
+
+        rightPanel.add(figureContainerPanel);
+        rightPanel.add(logPanel);
+        add(rightPanel, BorderLayout.EAST);
 
         // Estilo de fondo normal y seleccionado
         Color normalBackground = Color.LIGHT_GRAY;
@@ -216,6 +239,8 @@ public class WindowMenu extends JFrame {
                 }
             });
         }
+
+        // LISTENERS
 
         
         // Accion de resetear a imagen original
@@ -260,7 +285,6 @@ public class WindowMenu extends JFrame {
             }
         });
 
-        // LISTENERS
 
         // Listener para contaminationInput
         contaminationInput.addKeyListener(new KeyAdapter() {
@@ -292,7 +316,10 @@ public class WindowMenu extends JFrame {
                 processor.setImg(image);
                 try {
                     if (paralelOptionBox.isSelected()) {
-                        image = processor.processEroderP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
+                        ArrayList<Object> resultados;
+                        resultados = processor.processEroderP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
+                        image = (BufferedImage) resultados.get(0);
+                        addLog("Eroder",(long) resultados.get(1));
                         updateImage(image);
                     } else {
                         processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
@@ -312,7 +339,10 @@ public class WindowMenu extends JFrame {
                 processor.setImg(image);
                 try {
                     if (paralelOptionBox.isSelected()) {
-                        image = processor.processDilatorP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
+                        ArrayList<Object> resultados;
+                        resultados = processor.processDilatorP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
+                        image = (BufferedImage) resultados.get(0);
+                        addLog("Dilator",(long) resultados.get(1));
                         updateImage(image);
                     } else {
                         processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
@@ -324,6 +354,22 @@ public class WindowMenu extends JFrame {
 
             }
         });
+    }
+
+    public void addLog(String type,long totalTime){
+
+        String log = "Tiempo empleado: "+totalTime;
+
+        switch(type){
+            case "Eroder":
+                logHistory += "[Eroder] " + log + "ms\n";
+                break;
+            case "Dilator":
+                logHistory += "[Dilator] " + log + "ms\n";
+        }
+
+        this.logArea.setText(logHistory);
+
     }
 
     public void updateImage(BufferedImage img) {

@@ -4,6 +4,7 @@ import utils.Image;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 public class ImageProcessor {
     
@@ -46,7 +47,7 @@ public class ImageProcessor {
 
     }
 
-    public BufferedImage processDilatorP(String outputPath, Integer figura, Integer numThreads) throws Exception {
+    public ArrayList<Object> processDilatorP(String outputPath, Integer figura, Integer numThreads) throws Exception {
         // Crear arrays para almacenar los resultados de cada canal
         final double[][][] results = new double[3][][];
     
@@ -89,11 +90,16 @@ public class ImageProcessor {
         System.out.println("[Dilator] Tiempo de ejecución: " + (end - start) + "ms");
     
         // Combinar los resultados y guardar la imagen resultante
-        return saveImage(outputPath, results[0], results[1], results[2]);
+
+        ArrayList<Object> resultados = new ArrayList<Object>();
+        resultados.add(saveImage(outputPath, results[0], results[1], results[2]));
+        resultados.add(end - start);
+
+        return resultados;
     }
     
     // Proceso de erosión paralelo
-    public BufferedImage processEroderP(String outputPath, Integer figura, Integer numThreads) throws Exception {
+    public ArrayList<Object> processEroderP(String outputPath, Integer figura, Integer numThreads) throws Exception {
         // Crear arrays para almacenar los resultados de cada canal
         final double[][][] results = new double[3][][];
     
@@ -134,8 +140,11 @@ public class ImageProcessor {
         long end = System.currentTimeMillis();
         System.out.println("[Eroder] Tiempo de ejecución: " + (end - start) + "ms");
     
-        // Combinar los resultados y guardar la imagen resultante
-        return saveImage(outputPath, results[0], results[1], results[2]);
+        ArrayList<Object> resultados = new ArrayList<Object>();
+        resultados.add(saveImage(outputPath, results[0], results[1], results[2]));
+        resultados.add(end - start);
+
+        return resultados;
     }
 
      // Método para procesar un canal de color en paralelo utilizando Dilator
