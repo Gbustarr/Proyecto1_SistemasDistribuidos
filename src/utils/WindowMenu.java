@@ -24,6 +24,7 @@ public class WindowMenu extends JFrame {
     private JLabel imageWidthLabel;
     private JLabel imageHeightLabel;
     private BufferedImage image;
+    protected BufferedImage originalImage;
 
     private JButton figure1;
     private JButton figure2;
@@ -43,7 +44,7 @@ public class WindowMenu extends JFrame {
     public WindowMenu() {
         // Configurar la ventana
         setTitle("Procesamiento de Imagen");
-        setSize(800, 600);
+        setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         // Crear un panel para la imagen
@@ -69,12 +70,14 @@ public class WindowMenu extends JFrame {
         add(infoPanel, BorderLayout.NORTH);
 
         // Crear botones
+        JButton resetImagenButton = new JButton("Reset");
         JButton loadButton = new JButton("Cargar Imagen");
         JButton contaminarImagen = new JButton("Contaminar Imagen");
         JButton erodeButton = new JButton("Erosionar");
         JButton dilateButton = new JButton("Dilatar");
 
         // Deshabilitar botones al inicio de la ejecución del programa
+        resetImagenButton.setEnabled(false);
         contaminarImagen.setEnabled(false);
         erodeButton.setEnabled(false);
         dilateButton.setEnabled(false);
@@ -100,7 +103,7 @@ public class WindowMenu extends JFrame {
 
         // Añadir un espacio entre los botones
         
-
+        buttonPanel.add(resetImagenButton);
         buttonPanel.add(loadButton);
         buttonPanel.add(contaminarImagen);
         buttonPanel.add(contaminationInput);
@@ -215,6 +218,15 @@ public class WindowMenu extends JFrame {
         }
 
         
+        // Accion de resetear a imagen original
+
+        resetImagenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                image = originalImage;
+                updateImage(originalImage);
+            }
+        });
 
         // Acción para cargar imagen
         loadButton.addActionListener(new ActionListener() {
@@ -226,12 +238,14 @@ public class WindowMenu extends JFrame {
                 File file = fileChooser.getSelectedFile();
                 try {
                 image = ImageIO.read(file);
+                originalImage = ImageIO.read(file);
                 updateImage(image);
                 imageNameLabel.setText("Imagen: " + file.getName());
                 imageWidthLabel.setText("Ancho: " + image.getWidth() + "px");
                 imageHeightLabel.setText("Altura: " + image.getHeight() + "px");
 
                 // Habilitar botones
+                resetImagenButton.setEnabled(true);
                 contaminarImagen.setEnabled(true);
                 erodeButton.setEnabled(true);
                 dilateButton.setEnabled(true);
