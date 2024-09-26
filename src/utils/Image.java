@@ -15,7 +15,7 @@ public class Image {
 
     int OS = 0; // 0 = Windows, 1 = Linux
 
-    double[][] redChannel, greenChannel, blueChannel;
+    short[][] redChannel, greenChannel, blueChannel;
 
     public Image(int alto,int ancho,String path,BufferedImage img){
         this.alto = ancho; //Cambiado a proposito
@@ -49,8 +49,8 @@ public class Image {
         this.OS = OS;
     }
 
-    public double[][] getChannel(char tipo) {
-        double[][] values = new double[alto][ancho];
+    public short[][] getChannel(char tipo) {
+        short[][] values = new short[alto][ancho];
         for(int y = 0; y < alto; y++) {
             for(int x = 0; x < ancho; x++) {
                 Color color = new Color(img.getRGB(y, x));
@@ -63,7 +63,7 @@ public class Image {
                     gray = color.getBlue();
                 if(tipo == 'Z') //Gris
                     gray = (color.getRed()+color.getBlue()+color.getGreen())/3;
-                values[y][x] = gray;
+                values[y][x] = (short)gray;
             }
         }
         return values;

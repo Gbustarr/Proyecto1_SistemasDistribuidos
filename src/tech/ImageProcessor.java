@@ -25,9 +25,9 @@ public class ImageProcessor {
         long start = System.currentTimeMillis();
 
         // Dilatar los canales secuencialmente
-        double[][] redDilatado = dilatacionRed.dilatacionSecuencial(1,img.getAlto());
-        double[][] greenDilatado = dilatacionGreen.dilatacionSecuencial(1,img.getAlto());
-        double[][] blueDilatado = dilatacionBlue.dilatacionSecuencial(1,img.getAlto());
+        short[][] redDilatado = dilatacionRed.dilatacionSecuencial(1,img.getAlto());
+        short[][] greenDilatado = dilatacionGreen.dilatacionSecuencial(1,img.getAlto());
+        short[][] blueDilatado = dilatacionBlue.dilatacionSecuencial(1,img.getAlto());
 
         long end = System.currentTimeMillis();
 
@@ -52,9 +52,9 @@ public class ImageProcessor {
         long start = System.currentTimeMillis();
 
         // Erosionar los canales secuencialmente
-        double[][] rederosion = erosionRed.erocionSecuencial(1,img.getAlto());
-        double[][] greenerosion = erosionGreen.erocionSecuencial(1,img.getAlto());
-        double[][] blueerosion = erosionBlue.erocionSecuencial(1,img.getAlto());
+        short[][] rederosion = erosionRed.erocionSecuencial(1,img.getAlto());
+        short[][] greenerosion = erosionGreen.erocionSecuencial(1,img.getAlto());
+        short[][] blueerosion = erosionBlue.erocionSecuencial(1,img.getAlto());
 
         long end = System.currentTimeMillis();
         System.out.println("[Eroder] Tiempo de ejecución: " + (end - start) + "ms");
@@ -70,7 +70,7 @@ public class ImageProcessor {
 
     public ArrayList<Object> processDilatorP(String outputPath, Integer figura, Integer numThreads) throws Exception {
         // Crear arrays para almacenar los resultados de cada canal
-        final double[][][] results = new double[3][][];
+        final short[][][] results = new short[3][][];
     
         // Crear hilos para procesar cada canal en paralelo
         Thread redThread = new Thread(() -> {
@@ -123,7 +123,7 @@ public class ImageProcessor {
     // Proceso de erosión paralelo
     public ArrayList<Object> processEroderP(String outputPath, Integer figura, Integer numThreads) throws Exception {
         // Crear arrays para almacenar los resultados de cada canal
-        final double[][][] results = new double[3][][];
+        final short[][][] results = new short[3][][];
     
         // Crear hilos para procesar cada canal en paralelo
         Thread redThread = new Thread(() -> {
@@ -171,10 +171,10 @@ public class ImageProcessor {
     }
 
      // Método para procesar un canal de color en paralelo utilizando Dilator
-     private double[][] parallelChannelDilator(double[][] channel, Integer figura, Integer numThreads) throws InterruptedException {
+     private short[][] parallelChannelDilator(short[][] channel, Integer figura, Integer numThreads) throws InterruptedException {
         
         int rowsPerThread = channel.length / numThreads;
-        double[][] result = new double[channel.length][channel[0].length];
+        short[][] result = new short[channel.length][channel[0].length];
         Thread[] threads = new Thread[numThreads];
 
         for (int i = 0; i < numThreads; i++) {
@@ -202,9 +202,9 @@ public class ImageProcessor {
     }
 
     // Método para procesar un canal de color en paralelo utilizando Eroder
-    private double[][] parallelChannelEroder(double[][] channel, Integer figura, Integer numThreads) throws InterruptedException {
+    private short[][] parallelChannelEroder(short[][] channel, Integer figura, Integer numThreads) throws InterruptedException {
         int rowsPerThread = channel.length / numThreads;
-        double[][] result = new double[channel.length][channel[0].length];
+        short[][] result = new short[channel.length][channel[0].length];
         Thread[] threads = new Thread[numThreads];
 
         for (int i = 0; i < numThreads; i++) {
@@ -227,9 +227,9 @@ public class ImageProcessor {
     }
 
     // Procesar parte de un canal con dilatación
-    private void processPartDilator(double[][] original, double[][] result, int startRow, int endRow, int figura) {
+    private void processPartDilator(short[][] original, short[][] result, int startRow, int endRow, int figura) {
         Dilator dilator = new Dilator(original, figura);
-        double[][] partialResult = dilator.dilatacionSecuencial(startRow, endRow);
+        short[][] partialResult = dilator.dilatacionSecuencial(startRow, endRow);
         // Guardar la parte procesada en el arreglo result
         for (int i = startRow; i < endRow; i++) {
             for (int j = 0; j < original[0].length; j++) {
@@ -239,9 +239,9 @@ public class ImageProcessor {
     }
 
     // Procesar parte de un canal con erosión
-    private void processPartEroder(double[][] original, double[][] result, int startRow, int endRow, int figura) {
+    private void processPartEroder(short[][] original, short[][] result, int startRow, int endRow, int figura) {
         Eroder eroder = new Eroder(original, figura);
-        double[][] partialResult = eroder.erocionSecuencial(startRow, endRow);
+        short[][] partialResult = eroder.erocionSecuencial(startRow, endRow);
         // Guardar la parte procesada en el arreglo result
         for (int i = startRow; i < endRow; i++) {
             for (int j = 0; j < original[0].length; j++) {
@@ -250,7 +250,7 @@ public class ImageProcessor {
         }
     }
 
-    private BufferedImage saveImage(String outputPath, double[][] redChannel, double[][] greenChannel, double[][] blueChannel) throws Exception {
+    private BufferedImage saveImage(String outputPath, short[][] redChannel, short[][] greenChannel, short[][] blueChannel) throws Exception {
         int width = img.getAncho();
         int height = img.getAlto();
         BufferedImage imagen = new BufferedImage(height, width, BufferedImage.TYPE_INT_RGB); // Cambiados a proposito
