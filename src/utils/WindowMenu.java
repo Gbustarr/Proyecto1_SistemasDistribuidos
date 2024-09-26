@@ -314,21 +314,23 @@ public class WindowMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Actualizando ultima imagen cargada
                 processor.setImg(image);
+                ArrayList<Object> resultados;
                 try {
                     if (paralelOptionBox.isSelected()) {
-                        ArrayList<Object> resultados;
                         resultados = processor.processEroderP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
                         image = (BufferedImage) resultados.get(0);
-                        addLog("Eroder",(long) resultados.get(1));
+                        addLog("Eroder",(long) resultados.get(1), (String) resultados.get(2));
                         updateImage(image);
                     } else {
-                        processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                        resultados = processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                        image = (BufferedImage) resultados.get(0);
+                        addLog("Eroder",(long) resultados.get(1), (String) resultados.get(2));
+                        updateImage(image);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Error al erosionar la imagen");
                 }
-
             }
         });
 
@@ -337,15 +339,18 @@ public class WindowMenu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Actualizando ultima imagen cargada
                 processor.setImg(image);
+                ArrayList<Object> resultados;
                 try {
                     if (paralelOptionBox.isSelected()) {
-                        ArrayList<Object> resultados;
                         resultados = processor.processDilatorP("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]),numThreads);
                         image = (BufferedImage) resultados.get(0);
-                        addLog("Dilator",(long) resultados.get(1));
+                        addLog("Dilator",(long) resultados.get(1), (String) resultados.get(2));
                         updateImage(image);
                     } else {
-                        processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                        resultados = processor.processEroderS("src/images/output/output.jpg", Integer.parseInt(selectedFigureLabel.getText().split(" ")[1]));
+                        image = (BufferedImage) resultados.get(0);
+                        addLog("Dilator",(long) resultados.get(1), (String) resultados.get(2));
+                        updateImage(image);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -356,16 +361,24 @@ public class WindowMenu extends JFrame {
         });
     }
 
-    public void addLog(String type,long totalTime){
+    public void addLog(String type,long totalTime, String mode){
 
         String log = "Tiempo empleado: "+totalTime;
 
         switch(type){
             case "Eroder":
-                logHistory += "[Eroder] " + log + "ms\n";
+                if(mode == "P"){
+                    logHistory += "[P][Eroder] " + log + "ms\n";
+                }else{
+                    logHistory += "[S][Eroder] " + log + "ms\n";
+                }
                 break;
             case "Dilator":
-                logHistory += "[Dilator] " + log + "ms\n";
+                if(mode == "P"){
+                    logHistory += "[P][Dilator] " + log + "ms\n";
+                }else{
+                    logHistory += "[S][Dilator] " + log + "ms\n";
+                }
         }
 
         this.logArea.setText(logHistory);

@@ -16,34 +16,55 @@ public class ImageProcessor {
         //System.out.println("Image loaded: "+ this.img.getAlto()+"x"+ this.img.getAncho());
     }
 
-    public void processDilatorS(String outputPath , Integer figura) throws Exception {
+    public ArrayList<Object> processDilatorS(String outputPath , Integer figura) throws Exception {
         // Procesar los tres canales con dilatación
         Dilator dilatacionRed = new Dilator(img.getChannel('R'), figura);
         Dilator dilatacionGreen = new Dilator(img.getChannel('G'), figura);
         Dilator dilatacionBlue = new Dilator(img.getChannel('B'), figura);
+
+        long start = System.currentTimeMillis();
 
         // Dilatar los canales secuencialmente
         double[][] redDilatado = dilatacionRed.dilatacionSecuencial(1,img.getAlto());
         double[][] greenDilatado = dilatacionGreen.dilatacionSecuencial(1,img.getAlto());
         double[][] blueDilatado = dilatacionBlue.dilatacionSecuencial(1,img.getAlto());
 
+        long end = System.currentTimeMillis();
+
         // Combinar los canales en la imagen final
         saveImage(outputPath, redDilatado, greenDilatado, blueDilatado);
 
+        ArrayList<Object> resultados = new ArrayList<Object>();
+        resultados.add(saveImage(outputPath, redDilatado, greenDilatado, blueDilatado));
+        resultados.add(end - start);
+        resultados.add("P");
+
+        return resultados;
+
     }
 
-    public void processEroderS(String outputPath,Integer figura) throws Exception {
+    public ArrayList<Object> processEroderS(String outputPath,Integer figura) throws Exception {
         // Procesar los tres canales con erosión
         Eroder erosionRed = new Eroder(img.getChannel('R'), figura);
         Eroder erosionGreen = new Eroder(img.getChannel('G'), figura);
         Eroder erosionBlue = new Eroder(img.getChannel('B'), figura);
+
+        long start = System.currentTimeMillis();
 
         // Erosionar los canales secuencialmente
         double[][] rederosion = erosionRed.erocionSecuencial(1,img.getAlto());
         double[][] greenerosion = erosionGreen.erocionSecuencial(1,img.getAlto());
         double[][] blueerosion = erosionBlue.erocionSecuencial(1,img.getAlto());
 
-        saveImage(outputPath, rederosion, greenerosion, blueerosion);
+        long end = System.currentTimeMillis();
+        System.out.println("[Eroder] Tiempo de ejecución: " + (end - start) + "ms");
+
+        ArrayList<Object> resultados = new ArrayList<Object>();
+        resultados.add(saveImage(outputPath, rederosion, greenerosion, blueerosion));
+        resultados.add(end - start);
+        resultados.add("P");
+
+        return resultados;
 
     }
 
@@ -94,6 +115,7 @@ public class ImageProcessor {
         ArrayList<Object> resultados = new ArrayList<Object>();
         resultados.add(saveImage(outputPath, results[0], results[1], results[2]));
         resultados.add(end - start);
+        resultados.add("P");
 
         return resultados;
     }
@@ -143,6 +165,7 @@ public class ImageProcessor {
         ArrayList<Object> resultados = new ArrayList<Object>();
         resultados.add(saveImage(outputPath, results[0], results[1], results[2]));
         resultados.add(end - start);
+        resultados.add("P");
 
         return resultados;
     }
