@@ -14,7 +14,7 @@ Estas técnicas permiten una manipulación efectiva de imágenes para la mejora 
 ## Instalación
 1. Clonar el repositorio:
     ```sh
-    git clone https://github.com/usuario/Proyecto1_SistemasDistribuidos.git
+    git clone https://github.com/gbustarr/Proyecto1_SistemasDistribuidos.git
     ```
 2. Navegar a la carpeta del proyecto:
     ```sh
@@ -57,3 +57,7 @@ Este proyecto está bajo la Licencia MIT. Para más detalles, ver el archivo `LI
 
 - Guillermo Bustamante
 - Carlos Jara
+
+## Enlace a resultados del video
+
+https://www.dropbox.com/scl/fo/35zd2v1lfyoz5wokyehhu/AHURVR_pULFb5mVYkmUkXbU?rlkey=3tx5i410mmip84sj8hshy70tf&st=qd36gbmk&dl=0
