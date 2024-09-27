@@ -44,17 +44,21 @@ public class ImageProcessor {
     }
 
     public ArrayList<Object> processEroderS(String outputPath,Integer figura) throws Exception {
+        long start = System.currentTimeMillis();
         // Procesar los tres canales con erosión
         Eroder erosionRed = new Eroder(img.getChannel('R'), figura);
         Eroder erosionGreen = new Eroder(img.getChannel('G'), figura);
         Eroder erosionBlue = new Eroder(img.getChannel('B'), figura);
 
-        long start = System.currentTimeMillis();
+        
 
         // Erosionar los canales secuencialmente
         short[][] rederosion = erosionRed.erocionSecuencial(1,img.getAlto());
+        System.out.println("erocion red");
         short[][] greenerosion = erosionGreen.erocionSecuencial(1,img.getAlto());
+        System.out.println("erocion green");
         short[][] blueerosion = erosionBlue.erocionSecuencial(1,img.getAlto());
+        System.out.println("erocion blue");
 
         long end = System.currentTimeMillis();
         System.out.println("[Eroder] Tiempo de ejecución: " + (end - start) + "ms");

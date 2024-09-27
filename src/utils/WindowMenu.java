@@ -41,7 +41,7 @@ public class WindowMenu extends JFrame {
     public String imagePath = "";
     public float contaminationPercentage = 10f;
 
-    private int numThreads = 3;
+    private int numThreads = 2;
 
     ImageProcessor processor = new ImageProcessor();
 
